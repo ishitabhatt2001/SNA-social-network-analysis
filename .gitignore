@@ -1,129 +1,49 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
-# C extensions
-*.so
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+        
+        
+import networkx as nx
+G = nx.read_edgelist("../input/dataset1/data1.txt", create_using = nx.Graph(), nodetype=int)
+print(nx.info(G))
+import matplotlib.pyplot as plt
+%matplotlib inline
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+plt.figure(figsize=(10,10))
+nx.draw_networkx(G)
+plt.show()
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+density=2*(32/(34*33))
+density
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+nx.average_clustering(G)
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+d=nx.shortest_path(G, 5,7)
+d
 
-# Translations
-*.mo
-*.pot
+most_influential = nx.degree_centrality(G)
+for w in sorted(most_influential, key=most_influential.get, reverse=True):
+    print(w, most_influential[w])
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+most_important_link = nx.eigenvector_centrality(G)
+for w in sorted(most_important_link, key=most_important_link.get, reverse=True):
+    print(w, most_important_link[w])
+    
+    best_connector = nx.betweenness_centrality(G)
+for w in sorted(best_connector, key=best_connector.get, reverse=True):
+    print(w, best_connector[w])
+    
+    pos = nx.spring_layout(G)
+betCent = nx.betweenness_centrality(G, normalized=True, endpoints=True)
+node_color = [20000.0 * G.degree(v) for v in G]
+node_size =  [v * 10000 for v in betCent.values()]
+plt.figure(figsize=(20,20))
+nx.draw_networkx(G, pos=pos, with_labels=True,
+                 node_color=node_color,
+                 node_size=node_size )
+plt.axis('off')
 
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
